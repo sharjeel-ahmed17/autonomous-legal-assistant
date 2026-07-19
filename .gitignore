@@ -1,0 +1,119 @@
+index.md
+
+```gitignore
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Virtual Environments
+.venv/
+venv/
+env/
+ENV/
+
+# Environment Variables
+.env
+.env.*
+!.env.example
+
+# Python Packaging
+build/
+dist/
+*.egg-info/
+.eggs/
+pip-wheel-metadata/
+
+# Testing
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.pytest_cache/
+
+# Type Checking
+.mypy_cache/
+.pyre/
+.pytype/
+
+# Linting
+.ruff_cache/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# IDE
+.vscode/
+.idea/
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
+
+# SQLite
+*.db
+*.sqlite3
+
+# Alembic
+alembic/versions/*.pyc
+alembic/versions/__pycache__/
+
+# Uploaded Files
+data/uploads/*
+!data/uploads/.gitkeep
+
+# Generated Reports
+data/reports/*
+!data/reports/.gitkeep
+
+# Processed Documents
+data/processed/*
+!data/processed/.gitkeep
+
+# Local Embeddings / Cache
+data/embeddings/*
+!data/embeddings/.gitkeep
+
+# LangSmith
+.langsmith/
+
+# Cache
+.cache/
+
+# Temporary Files
+tmp/
+temp/
+
+# Node
+node_modules/
+
+# Coverage
+.coverage
+coverage.xml
+
+# PyCharm
+*.iml
+
+# VS Code
+.history/
+
+# macOS
+.AppleDouble
+.LSOverride
+
+# Windows
+Desktop.ini
+
+# Backup Files
+*.bak
+*.swp
+*.swo
+
+# uv
+.python-version
+```

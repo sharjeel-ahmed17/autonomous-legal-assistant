@@ -1,0 +1,99 @@
+[build-system]
+requires = ["setuptools>=75", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "autonomous-legal-assistant"
+version = "0.1.0"
+description = "Production-ready Agentic AI Legal Assistant built with FastAPI, LangGraph, LangChain, RAG, and MCP."
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+license = { text = "MIT" }
+
+authors = [
+    { name = "Your Name", email = "you@example.com" }
+]
+
+dependencies = [
+    "fastapi[standard]>=0.116.1",
+
+    "langchain>=0.3.27",
+    "langchain-core>=0.3.72",
+    "langchain-community>=0.3.27",
+    "langchain-openai>=0.3.28",
+    "langchain-cohere>=0.4.5",
+    "langchain-text-splitters>=0.3.9",
+    "langgraph>=0.6.3",
+    "langsmith>=0.4.8",
+
+    "openai>=1.99.0",
+    "groq>=0.31.0",
+    "cohere>=5.16.1",
+
+    "tiktoken>=0.9.0",
+
+    "sqlmodel>=0.0.24",
+    "alembic>=1.16.4",
+    "psycopg[binary]>=3.2.9",
+
+    "redis>=6.2.0",
+
+    "qdrant-client>=1.15.1",
+
+    "pymupdf>=1.26.3",
+    "pypdf>=5.9.0",
+    "python-docx>=1.2.0",
+    "pillow>=11.3.0",
+
+    "pydantic>=2.11.7",
+    "pydantic-settings>=2.10.1",
+    "python-dotenv>=1.1.1",
+
+    "httpx>=0.28.1",
+    "tenacity>=9.1.2",
+    "orjson>=3.11.1",
+    "rich>=14.1.0"
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.4.1",
+    "pytest-asyncio>=1.1.0",
+    "pytest-cov>=6.2.1",
+
+    "black>=25.1.0",
+    "ruff>=0.12.8",
+    "isort>=6.0.1",
+    "mypy>=1.17.1",
+
+    "pre-commit>=4.3.0",
+
+    "faker>=37.5.3"
+]
+
+[tool.black]
+line-length = 88
+target-version = ["py312"]
+
+[tool.isort]
+profile = "black"
+
+[tool.ruff]
+line-length = 88
+target-version = "py312"
+
+[tool.pytest.ini_options]
+testpaths = ["app/tests"]
+asyncio_mode = "auto"
+
+[tool.mypy]
+python_version = "3.12"
+ignore_missing_imports = true
+warn_unused_configs = true
+check_untyped_defs = true
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+include = ["app*"]
