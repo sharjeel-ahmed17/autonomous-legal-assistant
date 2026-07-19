@@ -23,6 +23,7 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = Field(...)
 
     DATABASE_URL: str = Field(...)
+    JWT_ALGORITHM: str = Field(...)
 
     REDIS_URL: str = Field(...)
 
