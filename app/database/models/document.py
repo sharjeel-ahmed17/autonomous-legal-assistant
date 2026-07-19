@@ -22,3 +22,4 @@ class Document(BaseModel, table=True):
     owner_id: UUID = Field(foreign_key="users.id")
 
     owner: "User" = Relationship(back_populates="documents")
+    chunks: list["DocumentChunk"] = Relationship(back_populates="document")
