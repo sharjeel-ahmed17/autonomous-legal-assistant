@@ -1,12 +1,3 @@
-# from sqlmodel import create_engine
-
-# from app.core.config import settings
-
-# engine = create_engine(
-#     settings.DATABASE_URL,
-#     echo=settings.DEBUG,
-# )
-
 from collections.abc import AsyncGenerator
 
 from sqlalchemy.ext.asyncio import AsyncEngine, create_async_engine
