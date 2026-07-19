@@ -1,1 +1,21 @@
-    
+from uuid import UUID
+
+from sqlmodel import Field, Relationship
+
+from app.database.models.base import BaseModel
+
+
+class Message(BaseModel, table=True):
+    __tablename__ = "messages"
+
+    role: str
+
+    content: str
+
+    conversation_id: UUID = Field(
+        foreign_key="conversations.id"
+    )
+
+    conversation: "Conversation" = Relationship(
+        back_populates="messages"
+    )
