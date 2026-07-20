@@ -108,3 +108,14 @@ async def delete_document_with_policy(
     enforce_delete_document(current_user, mock_document)
 
     return {"message": f"Document {document_id} deleted successfully"}
+
+
+if __name__ == "__main__":
+    import uvicorn
+
+    from fastapi import FastAPI
+
+    app = FastAPI(title="Auth Examples")
+    app.include_router(router)
+
+    uvicorn.run("app.auth.examples:app", reload=True)
