@@ -1,7 +1,4 @@
 index.md
-
-```gitignore
-# Python
 __pycache__/
 *.py[cod]
 *$py.class
@@ -116,4 +113,4 @@ Desktop.ini
 
 # uv
 .python-version
-```
+
