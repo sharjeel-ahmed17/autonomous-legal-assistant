@@ -1,6 +1,9 @@
 from datetime import UTC, datetime, timedelta
 
+from uuid import UUID
+
 from sqlmodel.ext.asyncio.session import AsyncSession
+
 
 from app.core.config import settings
 from app.core.exceptions import (
@@ -15,6 +18,7 @@ from app.core.security import (
     generate_api_key,
     generate_secure_token,
     hash_password,
+    hash_token,
     verify_password,
 )
 from app.database.models.api_key import ApiKey
@@ -86,13 +90,14 @@ class AuthService:
         device_info: str | None = None,
         ip_address: str | None = None,
     ) -> dict:
-        token_hash = hash_password(refresh_token)
+        token_hash = hash_token(refresh_token)
         stored = await self.refresh_token_repo.get_by_token_hash(
             self.session, token_hash
         )
         if not stored or stored.is_revoked:
             raise UnauthorizedException("Invalid or revoked refresh token.")
-        if stored.expires_at < datetime.now(UTC):
+        stored_expires = stored.expires_at.replace(tzinfo=UTC) if stored.expires_at.tzinfo is None else stored.expires_at
+        if stored_expires < datetime.now(UTC):
             raise UnauthorizedException("Refresh token has expired.")
 
         stored.is_revoked = True
@@ -105,7 +110,7 @@ class AuthService:
         return await self._generate_tokens(user, device_info, ip_address)
 
     async def logout(self, refresh_token: str) -> None:
-        token_hash = hash_password(refresh_token)
+        token_hash = hash_token(refresh_token)
         stored = await self.refresh_token_repo.get_by_token_hash(
             self.session, token_hash
         )
@@ -123,9 +128,14 @@ class AuthService:
         if not user_id:
             raise UnauthorizedException("Invalid token payload.")
 
-        user = await self.user_repo.get_by_id(self.session, user_id)
+        try:
+            user_uuid = UUID(user_id) if isinstance(user_id, str) else user_id
+        except (ValueError, TypeError):
+            raise UnauthorizedException("Invalid user ID in token payload.")
+
+        user = await self.user_repo.get_by_id(self.session, user_uuid)
         if not user:
-            raise NotFoundException("User not found.")
+            raise UnauthorizedException("User not found or token invalid.")
         if not user.is_active:
             raise ForbiddenException("Account is deactivated.")
         return user
@@ -171,8 +181,10 @@ class AuthService:
             if verify_password(raw_key, api_key.key_hash):
                 if not api_key.is_active:
                     raise ForbiddenException("API key is deactivated.")
-                if api_key.expires_at and api_key.expires_at < datetime.now(UTC):
-                    raise ForbiddenException("API key has expired.")
+                if api_key.expires_at:
+                    expires = api_key.expires_at.replace(tzinfo=UTC) if api_key.expires_at.tzinfo is None else api_key.expires_at
+                    if expires < datetime.now(UTC):
+                        raise ForbiddenException("API key has expired.")
                 api_key.last_used_at = datetime.now(UTC)
                 await self.api_key_repo.update(self.session, api_key)
                 return api_key
@@ -234,7 +246,7 @@ class AuthService:
     ) -> dict:
         access_token = create_access_token(subject=str(user.id))
         raw_refresh = generate_secure_token(48)
-        refresh_token_hash = hash_password(raw_refresh)
+        refresh_token_hash = hash_token(raw_refresh)
 
         refresh_record = RefreshToken(
             user_id=user.id,

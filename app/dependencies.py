@@ -11,6 +11,11 @@ from app.services.auth_service import AuthService
 from app.services.user_service import UserService
 
 
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
+
+security = HTTPBearer(auto_error=False)
+
+
 async def get_auth_service(
     session: Annotated[AsyncSession, Depends(get_session)],
 ) -> AsyncGenerator[AuthService, None]:
@@ -24,16 +29,24 @@ async def get_user_service(
 
 
 async def _get_current_user(
+    credentials: Annotated[HTTPAuthorizationCredentials | None, Depends(security)] = None,
     authorization: Annotated[str | None, Header()] = None,
     auth_service: Annotated[AuthService, Depends(get_auth_service)] = None,
 ) -> User:
-    if not authorization:
-        raise UnauthorizedException("Authorization header is required.")
+    token: str | None = None
 
-    scheme, _, token = authorization.partition(" ")
-    if scheme.lower() != "bearer" or not token:
+    if credentials and credentials.credentials:
+        token = credentials.credentials
+    elif authorization and authorization.strip():
+        auth_str = authorization.strip()
+        if auth_str.lower().startswith("bearer "):
+            token = auth_str[7:].strip()
+        else:
+            token = auth_str
+
+    if not token:
         raise UnauthorizedException(
-            "Invalid authorization header format. Use: Bearer <token>"
+            "Authorization header with Bearer token is required. Format: Bearer <access_token>"
         )
 
     return await auth_service.get_current_user(token)
@@ -42,3 +55,4 @@ async def _get_current_user(
 CurrentUser = Annotated[User, Depends(_get_current_user)]
 AuthServiceDep = Annotated[AuthService, Depends(get_auth_service)]
 UserServiceDep = Annotated[UserService, Depends(get_user_service)]
+

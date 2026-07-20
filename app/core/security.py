@@ -1,4 +1,5 @@
 from datetime import UTC, datetime, timedelta
+from hashlib import sha256
 from secrets import token_urlsafe
 from typing import Any
 
@@ -73,6 +74,10 @@ def decode_access_token(token: str) -> dict[str, Any]:
 
     except InvalidTokenError as exc:
         raise ValueError("Invalid access token.") from exc
+
+
+def hash_token(token: str) -> str:
+    return sha256(token.encode()).hexdigest()
 
 
 def generate_secure_token(length: int = 32) -> str:

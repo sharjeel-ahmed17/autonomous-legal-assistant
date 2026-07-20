@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Request, status
-from fastapi.responses import ORJSONResponse
+from fastapi.responses import JSONResponse
 
 
 class AppException(Exception):
@@ -92,8 +92,8 @@ def register_exception_handlers(app: FastAPI) -> None:
     async def app_exception_handler(
         request: Request,
         exc: AppException,
-    ) -> ORJSONResponse:
-        return ORJSONResponse(
+    ) -> JSONResponse:
+        return JSONResponse(
             status_code=exc.status_code,
             content={
                 "success": False,
@@ -109,8 +109,8 @@ def register_exception_handlers(app: FastAPI) -> None:
     async def global_exception_handler(
         request: Request,
         exc: Exception,
-    ) -> ORJSONResponse:
-        return ORJSONResponse(
+    ) -> JSONResponse:
+        return JSONResponse(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             content={
                 "success": False,
