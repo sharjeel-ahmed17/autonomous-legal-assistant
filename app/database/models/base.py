@@ -9,16 +9,17 @@ from sqlmodel import Field, SQLModel
 class TimestampMixin(SQLModel):
     created_at: datetime = Field(
         default_factory=lambda: datetime.now(UTC),
-        sa_column=Column(DateTime(timezone=True), nullable=False),
+        sa_type=DateTime(timezone=True),
+        nullable=False,
     )
 
     updated_at: datetime = Field(
         default_factory=lambda: datetime.now(UTC),
-        sa_column=Column(
-            DateTime(timezone=True),
-            nullable=False,
-            onupdate=lambda: datetime.now(UTC),
-        ),
+        sa_type=DateTime(timezone=True),
+        nullable=False,
+        sa_column_kwargs={
+            "onupdate": lambda: datetime.now(UTC),
+        },
     )
 
 
