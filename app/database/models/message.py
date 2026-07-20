@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from uuid import UUID
 
 from sqlmodel import Field, Relationship
@@ -11,7 +13,7 @@ class Message(BaseModel, table=True):
     role: str
     content: str
     token_count: int | None = None
-    metadata: str | None = None
+    metadata_json: str | None = None
 
     conversation_id: UUID = Field(foreign_key="conversations.id")
 

@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from datetime import datetime
 from decimal import Decimal
 from uuid import UUID
@@ -19,7 +21,7 @@ class AgentRun(BaseModel, table=True):
     input_data: str
     output_data: str | None = None
     error_message: str | None = None
-    metadata: str | None = None
+    metadata_json: str | None = None
 
     started_at: datetime | None = None
     completed_at: datetime | None = None

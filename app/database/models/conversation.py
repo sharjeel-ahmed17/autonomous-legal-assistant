@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from uuid import UUID
 
 from sqlmodel import Field, Relationship
@@ -10,7 +12,7 @@ class Conversation(BaseModel, table=True):
 
     title: str
     status: str = "active"
-    metadata: str | None = None
+    metadata_json: str | None = None
 
     user_id: UUID = Field(foreign_key="users.id")
 

@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from uuid import UUID
 
 from sqlmodel import Field, Relationship
@@ -12,6 +14,6 @@ class Embedding(BaseModel, table=True):
     model_name: str
     vector_store_id: str
     dimensions: int
-    metadata: str | None = None
+    metadata_json: str | None = None
 
     chunk: "DocumentChunk" = Relationship(back_populates="embeddings")

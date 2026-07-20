@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from uuid import UUID
 
 from sqlmodel import Field, Relationship
@@ -15,7 +17,7 @@ class Report(BaseModel, table=True):
     report_type: str
     content: str
     status: str = "draft"
-    metadata: str | None = None
+    metadata_json: str | None = None
 
     user: "User" = Relationship(back_populates="reports")
     agent_run: "AgentRun" | None = Relationship(back_populates="reports")

@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from uuid import UUID
 
 from sqlmodel import Field, Relationship
@@ -15,7 +17,7 @@ class Citation(BaseModel, table=True):
     citation_text: str
     source_page: int | None = None
     relevance_score: float | None = None
-    metadata: str | None = None
+    metadata_json: str | None = None
 
     document: "Document" = Relationship(back_populates="citations")
     message: "Message" | None = Relationship(back_populates="citations")

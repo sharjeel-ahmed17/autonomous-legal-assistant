@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from uuid import UUID
 
 from sqlmodel import Field, Relationship
@@ -15,7 +17,7 @@ class Feedback(BaseModel, table=True):
     rating: int
     comment: str | None = None
     category: str | None = None
-    metadata: str | None = None
+    metadata_json: str | None = None
 
     user: "User" = Relationship(back_populates="feedback")
     message: "Message" | None = Relationship(back_populates="feedback")

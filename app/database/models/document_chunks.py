@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from uuid import UUID
 
 from sqlmodel import Field, Relationship
@@ -13,7 +15,7 @@ class DocumentChunk(BaseModel, table=True):
     content: str
     page_number: int | None = None
     token_count: int | None = None
-    metadata: str | None = None
+    metadata_json: str | None = None
     embedding_id: str | None = None
 
     document: "Document" = Relationship(back_populates="chunks")

@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from uuid import UUID
 
 from sqlmodel import Field, Relationship, SQLModel
@@ -26,7 +28,7 @@ class Role(BaseModel, table=True):
     codename: str = Field(unique=True, index=True)
     description: str | None = None
     is_system_role: bool = False
-    metadata: str | None = None
+    metadata_json: str | None = None
 
     users: list["User"] = Relationship(back_populates="roles", link_model=UserRoleLink)
     permissions: list["Permission"] = Relationship(back_populates="roles", link_model=RolePermissionLink)

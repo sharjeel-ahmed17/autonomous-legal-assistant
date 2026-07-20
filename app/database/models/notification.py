@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from uuid import UUID
 
 from sqlmodel import Field, Relationship
@@ -13,6 +15,6 @@ class Notification(BaseModel, table=True):
     body: str
     type: str = "info"
     is_read: bool = False
-    metadata: str | None = None
+    metadata_json: str | None = None
 
     user: "User" = Relationship(back_populates="notifications")
