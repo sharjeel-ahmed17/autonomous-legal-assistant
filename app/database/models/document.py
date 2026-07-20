@@ -23,3 +23,4 @@ class Document(BaseModel, table=True):
 
     owner: "User" = Relationship(back_populates="documents")
     chunks: list["DocumentChunk"] = Relationship(back_populates="document")
+    citations: list["Citation"] = Relationship(back_populates="document")

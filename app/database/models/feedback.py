@@ -1,5 +1,4 @@
-from __future__ import annotations
-
+from typing import Optional
 from uuid import UUID
 
 from sqlmodel import Field, Relationship
@@ -20,5 +19,5 @@ class Feedback(BaseModel, table=True):
     metadata_json: str | None = None
 
     user: "User" = Relationship(back_populates="feedback")
-    message: "Message" | None = Relationship(back_populates="feedback")
-    agent_run: "AgentRun" | None = Relationship(back_populates="feedback")
+    message: Optional["Message"] = Relationship(back_populates="feedback")
+    agent_run: Optional["AgentRun"] = Relationship(back_populates="feedback")

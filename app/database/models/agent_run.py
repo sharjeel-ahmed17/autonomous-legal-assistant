@@ -1,7 +1,6 @@
-from __future__ import annotations
-
 from datetime import datetime
 from decimal import Decimal
+from typing import Optional
 from uuid import UUID
 
 from sqlmodel import Field, Relationship
@@ -28,7 +27,7 @@ class AgentRun(BaseModel, table=True):
     duration_ms: int | None = None
 
     user: "User" = Relationship(back_populates="agent_runs")
-    conversation: "Conversation" | None = Relationship(back_populates="agent_runs")
+    conversation: Optional["Conversation"] = Relationship(back_populates="agent_runs")
     citations: list["Citation"] = Relationship(back_populates="agent_run")
     feedback: list["Feedback"] = Relationship(back_populates="agent_run")
     reports: list["Report"] = Relationship(back_populates="agent_run")

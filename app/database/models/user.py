@@ -19,6 +19,7 @@ class User(BaseModel, table=True):
     is_active: bool = True
     is_superuser: bool = False
 
+    agent_runs: list["AgentRun"] = Relationship(back_populates="user")
     documents: list["Document"] = Relationship(back_populates="owner")
     conversations: list["Conversation"] = Relationship(back_populates="user")
     api_keys: list["ApiKey"] = Relationship(back_populates="user")
